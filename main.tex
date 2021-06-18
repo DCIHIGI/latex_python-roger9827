@@ -1,0 +1,447 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% fphw Assignment
+% LaTeX Template
+% Version 1.0 (27/04/2019)
+%
+% This template originates from:
+% https://www.LaTeXTemplates.com
+%
+% Authors:
+% Class by Felipe Portales-Oliva (f.portales.oliva@gmail.com) with template 
+% content and modifications by Vel (vel@LaTeXTemplates.com)
+%
+% Template (this file) License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[
+	12pt, % Default font size, values between 10pt-12pt are allowed
+	%letterpaper, % Uncomment for US letter paper size
+	%spanish, % Uncomment for Spanish
+]{fphw}
+
+% Template-specific packages
+\usepackage[utf8]{inputenc} % Required for inputting international characters
+\usepackage[T1]{fontenc} % Output font encoding for international characters
+\usepackage{mathpazo} % Use the Palatino font
+
+\usepackage{graphicx} % Required for including images
+
+\usepackage{booktabs} % Required for better horizontal rules in tables
+
+\usepackage{listings} % Required for insertion of code
+
+\usepackage{enumerate} % To modify the enumerate environment
+
+\usepackage{listings} % For writing code
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title{Trabajo Final Programacion en Python} % Assignment title
+
+\author{Rogelio Hashimoto Campos} % Student name
+
+\date{Junio 17, 2021} % Due date
+
+\institute{Universidad de Guanajuato \\ DCI} % Institute or school name
+
+\class{HIGI (Herramientas de la informacion)} % Course or class name
+
+\professor{Dra. Alma Xochitl Gonzalez Morales} % Professor or teacher in charge of the assignment
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Output the assignment title, created automatically using the information in the custom commands above
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT CONTENT
+%----------------------------------------------------------------------------------------
+
+\subsection*{Abstract}
+
+The task which was given to us is to use python for the data analysis of 2 subjects, first one being free subject, I chose the analysis of the sales of a bicycle shop, the other one was about the National Electoral Institue, and what we had to do was predicting how many ballouts we need for the next 2 months for the next elections.
+In the case of the Bicycle shop, I calculated what was the total unity cost and follow a tendency as well as calculating which age group is more likely to buy at the shop nd what is the revenue of each group.
+In the NEI we had to read 16 different data sheets and concentrate all that info, to then make our ballout numbers prediction for January and February of the year 2020.
+
+%------------------------------------------------
+
+
+
+
+\section*{Analisis del archivo de ventas sobre bicicleta}
+
+
+\begin{center}
+	\includegraphics[width=0.5\columnwidth]{bicicleta.jpeg} % Example image
+\end{center}
+%----------------------------------------------------------------------------------------
+
+\section*{Descripcion del Codigo}
+
+\lstset{language=Python}
+\lstset{frame=lines}
+\lstset{caption={Librerias usadas.}}
+\lstset{label={lst:code_direct}}
+\lstset{basicstyle=\footnotesize}
+\begin{lstlisting}
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+%matplotlib inline
+
+
+\end{lstlisting}
+
+Esto fueron las librerias que importe para empezar el trabajo, una vez importando todo lo que necesitaba empece a programar, cheque que se vieran todos los datos, use el codigo:
+
+\lstset{language=Python}
+\lstset{frame=lines}
+\lstset{caption={Extraer y leer documento .csv}}
+\lstset{label={lst:code_direct}}
+\lstset{basicstyle=\footnotesize}
+\begin{lstlisting}
+
+sales = pd.read_csv(
+'data/sales_data.csv',
+parse_dates=['Date'])
+
+sales.head()
+
+sales.info()
+
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 113036 entries, 0 to 113035
+Data columns (total 18 columns):
+#   Column            Non-Null Count   Dtype         
+---  ------            --------------   -----         
+0   Date              113036 non-null  datetime64[ns]
+1   Day               113036 non-null  int64         
+2   Month             113036 non-null  object        
+3   Year              113036 non-null  int64         
+4   Customer_Age      113036 non-null  int64         
+5   Age_Group         113036 non-null  object        
+6   Customer_Gender   113036 non-null  object        
+7   Country           113036 non-null  object        
+8   State             113036 non-null  object        
+9   Product_Category  113036 non-null  object        
+10  Sub_Category      113036 non-null  object        
+11  Product           113036 non-null  object        
+12  Order_Quantity    113036 non-null  int64         
+13  Unit_Cost         113036 non-null  int64         
+14  Unit_Price        113036 non-null  int64         
+15  Profit            113036 non-null  int64         
+16  Cost              113036 non-null  int64         
+17  Revenue           113036 non-null  int64         
+dtypes: datetime64[ns](1), int64(9), object(8)
+
+
+\end{lstlisting}
+En la siguiente imagen se puede observar Que en verdad si esta leyendo los datos y los esta separando.
+
+\begin{center}
+	\includegraphics[width=0.5\columnwidth]{Tabla1.png} % Example image
+\end{center}
+
+En este proyecto hice analisis y visualizacion de la tabla de Unidad de costo.
+
+\lstset{language=Python}
+\lstset{frame=lines}
+\lstset{caption={Librerias usadas.}}
+\lstset{label={lst:code_direct}}
+\lstset{basicstyle=\footnotesize}
+\begin{lstlisting}
+In[8]: sales['Unit_Cost'].describe()
+
+Out[8]:
+
+count    113036.000000
+mean        267.296366
+std         549.835483
+min           1.000000
+25%           2.000000
+50%           9.000000
+75%          42.000000
+max        2171.000000
+Name: Unit_Cost, dtype: float64
+
+In [9]:
+
+sales['Unit_Cost'].mean()
+
+Out[9]:
+
+267.296365759581
+
+In [10]:
+
+sales['Unit_Cost'].median()
+
+Out[10]:
+
+9.0
+
+
+
+
+\end{lstlisting}
+
+Obtuve la infromacion de la columna unidad de costo, nos da el promedio que es 267.2963, tambien nos arroja desviacion estanda, mediana y maximo.
+
+En las siguientes graficas nos mestra la interaccion entre la densidad que se tiene del producto y su unidad de costo, en otra grafica se tiene lo mismo pero se mustra la linea del promedio y de la mediana.
+\begin{center}
+	\includegraphics[width=0.5\columnwidth]{Grafica 1.png} % Example image
+\end{center}
+
+\begin{center}
+	\includegraphics[width=0.5\columnwidth]{Grafica 2.png} % Example image
+\end{center}
+
+\begin{center}
+	\includegraphics[width=0.5\columnwidth]{Grafica 3.png} % Example image
+\end{center}
+
+A continuacion se hizo el analisis con el grupo de edades, sobre el consumo que tienen en la tienda.
+
+\lstset{language=Python}
+\lstset{frame=lines}
+\lstset{caption={Librerias usadas.}}
+\lstset{label={lst:code_direct}}
+\lstset{basicstyle=\footnotesize}
+\begin{lstlisting}
+
+
+In [15]:
+
+sales['Age_Group'].value_counts()
+
+Out[15]:
+
+Adults (35-64)          55824
+Young Adults (25-34)    38654
+Youth (<25)             17828
+Seniors (64+)             730
+Name: Age_Group, dtype: int64
+
+In [17]:
+
+sales['Age_Group'].value_counts().plot(kind='pie', figsize=(6,6))
+
+Out[17]:
+
+<matplotlib.axes._subplots.AxesSubplot at 0x7f8ade8bc2e0>
+
+
+
+\end{lstlisting}
+
+Este codigo nos arrojo 2 graficas:
+
+\begin{center}
+	\includegraphics[width=0.5\columnwidth]{Grafica 5.png} % Example image
+\end{center}
+
+\begin{center}
+	\includegraphics[width=0.5\columnwidth]{Grafica 6.png} % Example image
+\end{center}
+
+En las siguientes Lineas de codigo, jugue con la informacion y queria ver la correlacion entre los datos.
+
+\begin{center}
+	\includegraphics[width=0.5\columnwidth]{Code1.png} % Example image
+\end{center}
+
+
+\lstset{language=Python}
+\lstset{frame=lines}
+\lstset{caption={Grafica de correlacion de todos los datos.}}
+\lstset{label={lst:code_direct}}
+\lstset{basicstyle=\footnotesize}
+\begin{lstlisting}
+fig = plt.figure(figsize=(8,8))
+plt.matshow(corr, cmap='RdBu', fignum=fig.number)
+plt.xticks(range(len(corr.columns)), corr.columns, rotation='vertical');
+plt.yticks(range(len(corr.columns)), corr.columns);
+\end{lstlisting}
+
+\begin{center}
+	\includegraphics[width=0.5\columnwidth]{Grafica 7.png} % Example image
+\end{center}
+
+Por ultimo saque las ganancias que se tienen por cada grupo de edad.
+
+\lstset{language=Python}
+\lstset{frame=lines}
+\lstset{caption={Grafica de correlacion de todos los datos.}}
+\lstset{label={lst:code_direct}}
+\lstset{basicstyle=\footnotesize}
+\begin{lstlisting}
+
+Get the mean revenue of the Adults (35-64) sales group
+In [39]:
+
+sales.loc[sales['Age_Group'] == 'Adults (35-64)', 'Revenue'].mean()
+
+Out[39]:
+
+762.8287654055604
+
+How many records belong to Age Group Youth (<25) or Adults (35-64)?
+In [43]:
+
+sales.loc[(sales['Age_Group'] == 'Youth (<25)') | (sales['Age_Group'] == 'Adults (35-64)')].shape[0]
+
+Out[43]:
+
+73652
+
+Get the mean revenue of the sales group Adults (35-64) in United States
+In [44]:
+
+sales.loc[(sales['Age_Group'] == 'Adults (35-64)') & (sales['Country'] == 'United States'), 'Revenue'].mean()
+
+Out[44]:
+
+726.7260473588342
+
+Increase the revenue by 10% to every sale made in France
+In [45]:
+
+sales.loc[sales['Country'] == 'France', 'Revenue'].head()
+
+Out[45]:
+
+50     787
+51     787
+52    2957
+53    2851
+60     626
+Name: Revenue, dtype: int64
+
+In [46]:
+
+#sales.loc[sales['Country'] == 'France', 'Revenue'] = sales.loc[sales['Country'] == 'France', 'Revenue'] * 1.1
+
+sales.loc[sales['Country'] == 'France', 'Revenue'] *= 1.1
+
+In [47]:
+
+sales.loc[sales['Country'] == 'France', 'Revenue'].head()
+
+Out[47]:
+
+50     865.7
+51     865.7
+52    3252.7
+53    3136.1
+60     688.6
+Name: Revenue, dtype: float64
+
+
+\end{lstlisting}
+
+
+%------------------------------------------------
+
+\section*{Analisis del archivo de INE y prediccion de Casillas.}
+
+Se usaron las siguientes librerias:
+
+\lstset{language=Python}
+\lstset{frame=lines}
+\lstset{caption={Grafica de correlacion de todos los datos.}}
+\lstset{label={lst:code_direct}}
+\lstset{basicstyle=\footnotesize}
+\begin{lstlisting}
+##Importar librerias a utilizar 
+import numpy as np
+import matplotlib.pyplot as plt
+#from scipy.optimize import minimize
+import os
+import glob 
+import pandas as pd
+import re
+import math
+\end{lstlisting}
+
+Y se usaron las siguientes lineas de codigo para poder leer los documentos .csv:
+
+\lstset{language=Python}
+\lstset{frame=lines}
+\lstset{caption={Grafica de correlacion de todos los datos.}}
+\lstset{label={lst:code_direct}}
+\lstset{basicstyle=\footnotesize}
+\begin{lstlisting}
+import glob
+files=glob.glob("./higi/*.txt")
+
+date=[]
+date_=[]
+files_=[]
+
+for i,file in enumerate(files):
+date.append(re.findall(r'\d+',file)[0])
+
+
+temp=sorted(range(len(date)), key=date.__getitem__)
+
+for i in temp:
+date_.append(date[i])
+print(date[i],files[i])
+files_.append(files[i])
+\end{lstlisting}
+
+Se uso el codigo para poder acomodar los archivos por meses y asi extraerlos en orden.
+Se obtuvo la lista nominal y la lista nacional de cada seccion de Guanajuato, y se grafico.
+
+\lstset{language=Python}
+\lstset{frame=lines}
+\lstset{caption={Grafica de correlacion de todos los datos.}}
+\lstset{label={lst:code_direct}}
+\lstset{basicstyle=\footnotesize}
+\begin{lstlisting}
+for i,file in enumerate(files_):
+data=pd.read_csv(file)
+data=data[1:]
+data=data[data['ENTIDAD']==11][1:]
+mpo=data.groupby(['MUNICIPIO']).sum()
+if i==0 :
+if 'LISTA_NAL' in mpo.columns:
+df_mpo = pd.DataFrame(mpo['LISTA_NAL'])
+if 'LISTA_NACIONAL' in mpo.columns:
+df_mpo = pd.DataFrame(mpo['LISTA_NACIONAL'])
+if 'LISTA' in mpo.columns:
+df_mpo = pd.DataFrame(mpo['LISTA'])
+else:
+if 'LISTA_NAL' in mpo.columns:
+df_mpo[date_[i]]=mpo['LISTA_NAL']
+if 'LISTA_NACIONAL' in mpo.columns:
+df_mpo[date_[i]]=mpo['LISTA_NACIONAL']
+if 'LISTA' in mpo.columns:
+df_mpo[date_[i]]=mpo['LISTA']ing}
+
+plt.figure(figsize=(6,6))
+
+for i in range(46):
+plt.plot(df_mpo.iloc[i])
+plt.yscale('log')
+\end{lstlisting}
+
+\begin{center}
+	\includegraphics[width=0.5\columnwidth]{Tabla 2.png} % Example image
+\end{center}
+
+
+
+
+\end{document}
